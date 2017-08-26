@@ -1,1 +1,1 @@
-# App showing list of Repo's from Git Account
+# App showing list of Repos from Git Account
