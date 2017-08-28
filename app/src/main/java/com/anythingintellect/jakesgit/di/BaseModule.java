@@ -6,7 +6,7 @@ import dagger.Module;
  * Created by ishan.dhingra on 26/08/17.
  */
 
-@Module(includes = NetworkModule.class)
+@Module(includes = {NetworkModule.class, PersistenceModule.class})
 public class BaseModule {
 
 }

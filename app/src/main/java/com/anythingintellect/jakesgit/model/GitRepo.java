@@ -1,14 +1,19 @@
 package com.anythingintellect.jakesgit.model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by ishan.dhingra on 26/08/17.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GitRepo {
+public class GitRepo extends RealmObject {
 
+    @PrimaryKey
     private long id;
     private String name;
     private String description;
