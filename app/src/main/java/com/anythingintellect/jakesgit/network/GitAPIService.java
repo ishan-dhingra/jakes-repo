@@ -14,8 +14,10 @@ import retrofit2.http.GET;
 public interface GitAPIService {
 
     // User name and per page can made dynamic as well
-    // for now just sticking to basics as per requirement
-    @GET("/users/JakeWharton/repos?page={page}&per_page=15")
+    // for now just sticking to basics as per requirement.
+    // Keeping a specified order, so that local data set can be queried
+    // by same order.
+    @GET("/users/JakeWharton/repos?page={page}&per_page=15&sort=id")
     public Observable<List<GitRepo>> getRepositories(int page);
 
 }
