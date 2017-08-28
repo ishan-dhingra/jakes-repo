@@ -1,5 +1,7 @@
 package com.anythingintellect.jakesgit.di;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 
 /**
@@ -7,6 +9,7 @@ import dagger.Component;
  */
 
 @Component(modules = BaseModule.class)
+@Singleton
 public interface AppComponent {
 
     FragmentComponent plusFragmentModule(FragmentModule fragmentModule);

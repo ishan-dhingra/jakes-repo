@@ -7,6 +7,8 @@ import com.anythingintellect.jakesgit.di.DaggerAppComponent;
 import com.anythingintellect.jakesgit.di.NetworkModule;
 import com.anythingintellect.jakesgit.util.Constants;
 
+import io.realm.Realm;
+
 /**
  * Created by ishan.dhingra on 26/08/17.
  */
@@ -18,6 +20,7 @@ public class JakesGitApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Realm.init(this);
         initAppComponent();
     }
 

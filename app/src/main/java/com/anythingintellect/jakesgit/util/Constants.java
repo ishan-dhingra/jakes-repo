@@ -7,5 +7,6 @@ package com.anythingintellect.jakesgit.util;
 public class Constants {
 
     public static final String API_BASE_URL = "https://api.github.com/";
+    public static final int ITEM_PER_PAGE = 15;
 
 }

@@ -28,7 +28,7 @@ public class RealmLocalDataStore implements LocalDataStore {
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                realm.copyFromRealm(gitRepos);
+                realm.copyToRealmOrUpdate(gitRepos);
             }
         });
     }

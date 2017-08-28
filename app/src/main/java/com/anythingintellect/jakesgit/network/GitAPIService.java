@@ -1,11 +1,13 @@
 package com.anythingintellect.jakesgit.network;
 
 import com.anythingintellect.jakesgit.model.GitRepo;
+import com.anythingintellect.jakesgit.util.Constants;
 
 import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
  * Created by ishan.dhingra on 26/08/17.
@@ -17,7 +19,7 @@ public interface GitAPIService {
     // for now just sticking to basics as per requirement.
     // Keeping a specified order, so that local data set can be queried
     // by same order.
-    @GET("/users/JakeWharton/repos?page={page}&per_page=15&sort=id")
-    Observable<List<GitRepo>> getRepositories(int page);
+    @GET("/users/JakeWharton/repos?per_page="+ Constants.ITEM_PER_PAGE+"&sort=id")
+    Observable<List<GitRepo>> getRepositories(@Query("page") int page);
 
 }

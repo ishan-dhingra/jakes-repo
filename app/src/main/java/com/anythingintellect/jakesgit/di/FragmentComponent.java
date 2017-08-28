@@ -2,6 +2,8 @@ package com.anythingintellect.jakesgit.di;
 
 import com.anythingintellect.jakesgit.view.RepoListFragment;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 import dagger.Subcomponent;
 
@@ -10,6 +12,7 @@ import dagger.Subcomponent;
  */
 
 @Subcomponent(modules = FragmentModule.class)
+@PerFragment
 public interface FragmentComponent {
 
     void inject(RepoListFragment fragment);
