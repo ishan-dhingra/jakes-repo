@@ -13,6 +13,7 @@ import io.realm.Sort;
  * Created by ishan.dhingra on 28/08/17.
  */
 
+// Can be improved further
 public class RealmLocalDataStore implements LocalDataStore {
 
     // Keeping sorting same as API
