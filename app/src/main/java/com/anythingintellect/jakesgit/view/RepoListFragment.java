@@ -16,6 +16,7 @@ import com.anythingintellect.jakesgit.R;
 import com.anythingintellect.jakesgit.adapter.GitRepoAdapter;
 import com.anythingintellect.jakesgit.di.FragmentModule;
 import com.anythingintellect.jakesgit.model.GitRepo;
+import com.anythingintellect.jakesgit.util.Navigator;
 import com.anythingintellect.jakesgit.viewmodel.RepoListViewModel;
 
 import javax.inject.Inject;
@@ -31,6 +32,8 @@ public class RepoListFragment extends Fragment {
 
     @Inject
     RepoListViewModel viewModel;
+    @Inject
+    Navigator navigator;
     GitRepoAdapter gitRepoAdapter;
 
     public RepoListFragment() {
@@ -41,7 +44,7 @@ public class RepoListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         injectDependencies();
-        gitRepoAdapter = new GitRepoAdapter(viewModel.getRealRepoList());
+        gitRepoAdapter = new GitRepoAdapter(viewModel.getRealRepoList(), navigator);
         viewModel.loadNext();
     }
 

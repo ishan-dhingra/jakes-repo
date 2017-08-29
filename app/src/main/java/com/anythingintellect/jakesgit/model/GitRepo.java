@@ -21,6 +21,8 @@ public class GitRepo extends RealmObject {
     @JsonProperty("open_issues")
     private int openIssues;
     private int watchers;
+    @JsonProperty("html_url")
+    private String url;
 
     public long getId() {
         return id;
@@ -71,4 +73,11 @@ public class GitRepo extends RealmObject {
     }
 
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

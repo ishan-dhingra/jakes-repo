@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.anythingintellect.jakesgit.R;
 import com.anythingintellect.jakesgit.databinding.ItemGitRepoBinding;
 import com.anythingintellect.jakesgit.model.GitRepo;
+import com.anythingintellect.jakesgit.util.Navigator;
 import com.anythingintellect.jakesgit.viewmodel.ItemGitRepoViewModel;
 
 import io.realm.RealmResults;
@@ -20,9 +21,11 @@ import io.realm.RealmResults;
 public class GitRepoAdapter extends RecyclerView.Adapter<GitRepoAdapter.GitRepoViewHolder> {
 
     private RealmResults<GitRepo> repoList;
+    private final Navigator navigator;
 
-    public GitRepoAdapter(RealmResults<GitRepo> repoList) {
+    public GitRepoAdapter(RealmResults<GitRepo> repoList, Navigator navigator) {
         this.repoList = repoList;
+        this.navigator = navigator;
         setHasStableIds(true);
     }
 
@@ -31,7 +34,7 @@ public class GitRepoAdapter extends RecyclerView.Adapter<GitRepoAdapter.GitRepoV
     public GitRepoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemGitRepoBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()), R.layout.item_git_repo, parent, false);
-        return new GitRepoViewHolder(binding, new ItemGitRepoViewModel());
+        return new GitRepoViewHolder(binding, new ItemGitRepoViewModel(navigator));
     }
 
     @Override

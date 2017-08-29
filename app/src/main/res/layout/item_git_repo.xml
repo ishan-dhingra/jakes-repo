@@ -3,11 +3,62 @@
     <data>
         <variable name="vm" type="com.anythingintellect.jakesgit.viewmodel.ItemGitRepoViewModel"/>
     </data>
-    <LinearLayout android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="match_parent"
-            android:text="@{vm.gitRepo.name}"
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:onClick="@{() -> vm.openRepo()}"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:layout_height="80dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_repo"
             android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:text="@{vm.gitRepo.name}"
+                android:textSize="16sp"
+                android:textColor="@color/primary_text"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="match_parent"
+                android:text="@{vm.gitRepo.description}"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textSize="12sp"
+                android:textColor="@color/secondary_text"
+                android:layout_height="30dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="bottom"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:drawableLeft="@drawable/ic_language"
+                    android:drawablePadding="5dp"
+                    android:layout_marginRight="10dp"
+                    android:text="@{vm.gitRepo.language}"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:drawableLeft="@drawable/ic_issues"
+                    android:drawablePadding="5dp"
+                    android:text="@{String.valueOf(vm.gitRepo.openIssues)}"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="@{String.valueOf(vm.gitRepo.watchers)}"
+                    android:drawableLeft="@drawable/ic_watchers"
+                    android:drawablePadding="5dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </layout>
