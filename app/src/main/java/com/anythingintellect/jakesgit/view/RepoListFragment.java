@@ -1,21 +1,25 @@
 package com.anythingintellect.jakesgit.view;
 
 
+import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.anythingintellect.jakesgit.JakesGitApp;
 import com.anythingintellect.jakesgit.R;
 import com.anythingintellect.jakesgit.adapter.GitRepoAdapter;
 import com.anythingintellect.jakesgit.di.FragmentModule;
 import com.anythingintellect.jakesgit.model.GitRepo;
+import com.anythingintellect.jakesgit.util.Constants;
 import com.anythingintellect.jakesgit.util.Navigator;
 import com.anythingintellect.jakesgit.viewmodel.RepoListViewModel;
 
@@ -35,6 +39,7 @@ public class RepoListFragment extends Fragment {
     @Inject
     Navigator navigator;
     GitRepoAdapter gitRepoAdapter;
+    LinearLayoutManager linearLayoutManager;
 
     public RepoListFragment() {
         setRetainInstance(true);
@@ -45,7 +50,8 @@ public class RepoListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         injectDependencies();
         gitRepoAdapter = new GitRepoAdapter(viewModel.getRealRepoList(), navigator);
-        viewModel.loadNext();
+        viewModel.getHasMore().addOnPropertyChangedCallback(hasMoreListener);
+        viewModel.getOnError().addOnPropertyChangedCallback(onErrorListener);
     }
 
     private void injectDependencies() {
@@ -69,11 +75,33 @@ public class RepoListFragment extends Fragment {
     }
 
     private void setupRV(RecyclerView recyclerView) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(gitRepoAdapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
 
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int lastVisible = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                // Load when last third item from bottom is visible
+                if (lastVisible + 3 > linearLayoutManager.getItemCount()) {
+                    viewModel.loadPage();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        viewModel.onDispose();
     }
 
     @Override
@@ -88,6 +116,7 @@ public class RepoListFragment extends Fragment {
         viewModel.getRealRepoList().removeAllChangeListeners();
     }
 
+    // Taken from https://realm.io/docs/java/latest/
     private final OrderedRealmCollectionChangeListener<RealmResults<GitRepo>> changeListener =
             new OrderedRealmCollectionChangeListener<RealmResults<GitRepo>>() {
         @Override
@@ -95,6 +124,7 @@ public class RepoListFragment extends Fragment {
             // `null`  means the async query returns the first time.
             if (changeSet == null) {
                 gitRepoAdapter.notifyDataSetChanged();
+                viewModel.loadPage();
                 return;
             }
             // For deletions, the adapter has to be notified in reverse order.
@@ -113,6 +143,33 @@ public class RepoListFragment extends Fragment {
             for (OrderedCollectionChangeSet.Range range : modifications) {
                 gitRepoAdapter.notifyItemRangeChanged(range.startIndex, range.length);
             }
+
         }
     };
+
+    private final Observable.OnPropertyChangedCallback hasMoreListener = new Observable.OnPropertyChangedCallback() {
+        @Override
+        public void onPropertyChanged(Observable observable, int i) {
+            if(viewModel.getHasMore().get()) {
+                gitRepoAdapter.showLoading();
+            } else {
+                gitRepoAdapter.hideLoading();
+            }
+        }
+    };
+
+    // This part can be made better, for time limitations I am keeping it simiple
+    private final Observable.OnPropertyChangedCallback onErrorListener = new Observable.OnPropertyChangedCallback() {
+        @Override
+        public void onPropertyChanged(Observable observable, int i) {
+            showError();
+        }
+    };
+
+    private void showError() {
+        Toast toast = Toast.makeText(getContext(), "Unable to sync with Server!", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
 }

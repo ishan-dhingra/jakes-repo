@@ -7,6 +7,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by ishan.dhingra on 28/08/17.
@@ -19,7 +20,7 @@ public class RealmLocalDataStore implements LocalDataStore {
     @Override
     public RealmResults<GitRepo> listGitRepo() {
         Realm realm = Realm.getDefaultInstance();
-        return realm.where(GitRepo.class).findAllSortedAsync("id");
+        return realm.where(GitRepo.class).findAllSortedAsync("id", Sort.DESCENDING);
     }
 
     @Override

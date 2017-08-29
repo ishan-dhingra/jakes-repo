@@ -15,6 +15,7 @@ import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.realm.RealmResults;
+import rx.Observable;
 
 /**
  * Created by ishan.dhingra on 28/08/17.
@@ -44,11 +45,17 @@ public class RepoListViewModel {
         return realRepoList;
     }
 
-    public void loadNext() {
+    public void loadPage() {
         if (apiDisposable == null && hasMore.get()) {
+            // If it's first request, we have to make sure we sync all cached items with server
+            int pageSize = Constants.ITEM_PER_PAGE;
+            if (page == 1 && realRepoList.size() > Constants.ITEM_PER_PAGE) {
+                pageSize = realRepoList.size();
+                page = realRepoList.size()/Constants.ITEM_PER_PAGE;
+            }
             onError.set(false);
             repository
-                    .fetchRepoList(page)
+                    .fetchRepoList(page, pageSize)
                     .subscribe(new Observer<List<GitRepo>>() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
@@ -62,7 +69,6 @@ public class RepoListViewModel {
                     if (gitRepoList.size() < Constants.ITEM_PER_PAGE) {
                         hasMore.set(false);
                     }
-                    Log.d("repo", "item fetched: " + gitRepoList.size());
                 }
 
                 @Override
@@ -78,6 +84,15 @@ public class RepoListViewModel {
             });
         }
     }
+
+    public ObservableField<Boolean> getHasMore() {
+        return hasMore;
+    }
+
+    public ObservableField<Boolean> getOnError() {
+        return onError;
+    }
+
 
     public void onDispose() {
         if (apiDisposable != null) {

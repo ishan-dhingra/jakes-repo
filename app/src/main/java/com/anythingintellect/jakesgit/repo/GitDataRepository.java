@@ -17,7 +17,7 @@ public interface GitDataRepository {
     RealmResults<GitRepo> listGitRepo();
 
     // Should call API
-    Observable<List<GitRepo>> fetchRepoList(int page);
+    Observable<List<GitRepo>> fetchRepoList(int page, int pageSize);
 
     void saveGitRepoList(List<GitRepo> gitRepoList);
 

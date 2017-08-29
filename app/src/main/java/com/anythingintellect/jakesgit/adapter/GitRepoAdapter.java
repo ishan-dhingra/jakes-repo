@@ -22,6 +22,7 @@ public class GitRepoAdapter extends RecyclerView.Adapter<GitRepoAdapter.GitRepoV
 
     private RealmResults<GitRepo> repoList;
     private final Navigator navigator;
+    private boolean showLoading = true;
 
     public GitRepoAdapter(RealmResults<GitRepo> repoList, Navigator navigator) {
         this.repoList = repoList;
@@ -32,24 +33,55 @@ public class GitRepoAdapter extends RecyclerView.Adapter<GitRepoAdapter.GitRepoV
 
     @Override
     public GitRepoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ItemGitRepoBinding binding = DataBindingUtil.inflate(
-                LayoutInflater.from(parent.getContext()), R.layout.item_git_repo, parent, false);
-        return new GitRepoViewHolder(binding, new ItemGitRepoViewModel(navigator));
+        if (viewType == R.layout.item_git_repo) {
+            ItemGitRepoBinding binding = DataBindingUtil.inflate(
+                    LayoutInflater.from(parent.getContext()), R.layout.item_git_repo, parent, false);
+            return new GitRepoViewHolder(binding, new ItemGitRepoViewModel(navigator));
+        } else {
+            View loadingView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false);
+            return new GitRepoViewHolder(loadingView);
+        }
     }
 
     @Override
     public void onBindViewHolder(GitRepoViewHolder holder, int position) {
-        holder.bind(repoList.get(position));
+        if (repoList.size() != position) {
+            holder.bind(repoList.get(position));
+        }
     }
 
     @Override
     public long getItemId(int position) {
-        return repoList.get(position).getId();
+        if (position != repoList.size()) {
+            return repoList.get(position).getId();
+        }
+        return 0L;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position != repoList.size()) {
+            return R.layout.item_git_repo;
+        }
+        return super.getItemViewType(position);
     }
 
     @Override
     public int getItemCount() {
-        return repoList.size();
+        if (!showLoading) {
+            return repoList.size();
+        }
+        return repoList.size() + 1;
+    }
+
+    public void showLoading() {
+        this.showLoading = true;
+        notifyItemInserted(repoList.size());
+    }
+
+    public void hideLoading() {
+        this.showLoading = false;
+        notifyItemRemoved(repoList.size());
     }
 
     static class GitRepoViewHolder extends RecyclerView.ViewHolder {
@@ -57,6 +89,11 @@ public class GitRepoAdapter extends RecyclerView.Adapter<GitRepoAdapter.GitRepoV
         private final ItemGitRepoBinding binding;
         private final ItemGitRepoViewModel viewModel;
 
+        GitRepoViewHolder(View staticView) {
+            super(staticView);
+            this.binding = null;
+            this.viewModel = null;
+        }
         GitRepoViewHolder(ItemGitRepoBinding binding, ItemGitRepoViewModel viewModel) {
             super(binding.getRoot());
             this.binding = binding;
@@ -64,9 +101,11 @@ public class GitRepoAdapter extends RecyclerView.Adapter<GitRepoAdapter.GitRepoV
         }
 
         void bind(GitRepo gitRepo) {
-            viewModel.setGitRepo(gitRepo);
-            binding.setVm(viewModel);
-            binding.executePendingBindings();
+            if (binding != null) {
+                viewModel.setGitRepo(gitRepo);
+                binding.setVm(viewModel);
+                binding.executePendingBindings();
+            }
         }
     }
 

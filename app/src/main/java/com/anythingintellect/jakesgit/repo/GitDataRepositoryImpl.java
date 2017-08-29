@@ -31,8 +31,8 @@ public class GitDataRepositoryImpl implements GitDataRepository {
     }
 
     @Override
-    public Observable<List<GitRepo>> fetchRepoList(int page) {
-        return gitAPIService.getRepositories(page)
+    public Observable<List<GitRepo>> fetchRepoList(int page, int pageSize) {
+        return gitAPIService.getRepositories(page, pageSize)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }

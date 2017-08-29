@@ -19,7 +19,7 @@ public interface GitAPIService {
     // for now just sticking to basics as per requirement.
     // Keeping a specified order, so that local data set can be queried
     // by same order.
-    @GET("/users/JakeWharton/repos?per_page="+ Constants.ITEM_PER_PAGE+"&sort=id")
-    Observable<List<GitRepo>> getRepositories(@Query("page") int page);
+    @GET("/users/JakeWharton/repos?sort=id")
+    Observable<List<GitRepo>> getRepositories(@Query("page") int page, @Query("per_page") int pageSize);
 
 }
