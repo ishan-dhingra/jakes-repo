@@ -11,9 +11,18 @@ import java.util.List;
 
 public class MockData {
     private static List<GitRepo> repoList;
+    private static GitRepo gitRepo;
+
     static {
         repoList = new ArrayList<>();
+        gitRepo = new GitRepo();
+        gitRepo.setName("Test Repo");
+        gitRepo.setId(1100L);
+        gitRepo.setDescription("Test");
+        gitRepo.setLanguage("Java");
+        gitRepo.setUrl("http://github.com");
     }
+
 
     public static List<GitRepo> getEmptyRepoList() {
         return repoList;
@@ -26,5 +35,9 @@ public class MockData {
             --count;
         }
         return list;
+    }
+
+    public static GitRepo getGitRepo() {
+        return gitRepo;
     }
 }
