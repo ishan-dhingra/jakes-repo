@@ -15,7 +15,16 @@ public class MockData {
         repoList = new ArrayList<>();
     }
 
-    public static List<GitRepo> getRepoList() {
+    public static List<GitRepo> getEmptyRepoList() {
         return repoList;
+    }
+
+    public static List<GitRepo> getListWithElementCount(int count) {
+        List<GitRepo> list = new ArrayList<>();
+        while (count != 0) {
+            list.add(new GitRepo());
+            --count;
+        }
+        return list;
     }
 }

@@ -1,6 +1,5 @@
 package com.anythingintellect.jakesgit.repo;
 
-import com.anythingintellect.jakesgit.BuildConfig;
 import com.anythingintellect.jakesgit.db.LocalDataStore;
 import com.anythingintellect.jakesgit.model.GitRepo;
 import com.anythingintellect.jakesgit.network.GitAPIService;
@@ -14,12 +13,9 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
@@ -71,7 +67,7 @@ public class GitDataRepositoryTest {
     // Test saveGitRepoList: Should store git repo list to localStore
     @Test
     public void testSaveRepoList_ShouldStoreGitRepoListToLocalStore() {
-        List<GitRepo> dummyList = MockData.getRepoList();
+        List<GitRepo> dummyList = MockData.getEmptyRepoList();
         gitDataRepository.saveGitRepoList(dummyList);
         verify(localDataStore, only()).saveGitRepo(dummyList);
     }

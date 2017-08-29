@@ -49,7 +49,8 @@ public class RepoListViewModel {
         if (apiDisposable == null && hasMore.get()) {
             // If it's first request, we have to make sure we sync all cached items with server
             int pageSize = Constants.ITEM_PER_PAGE;
-            if (page == 1 && realRepoList.size() > Constants.ITEM_PER_PAGE) {
+            int currentCount = (realRepoList == null) ? 0 : realRepoList.size();
+            if (page == 1 && currentCount > Constants.ITEM_PER_PAGE) {
                 pageSize = realRepoList.size();
                 page = realRepoList.size()/Constants.ITEM_PER_PAGE;
             }
