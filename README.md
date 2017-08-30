@@ -1,5 +1,7 @@
 # Jake's Repo - App listing Git Repostiories using MVVM, Realm, Retrofit, RxJava and Dagger 2
 
+<a href="https://github.com/ishan-dhingra/jakes-repo/raw/master/app-debug.apk">Download APK</a>
+
 Requirement check list:
 
 Feature checks:
