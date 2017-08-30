@@ -3,6 +3,7 @@ package com.anythingintellect.jakesgit.view;
 
 import android.databinding.Observable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -19,7 +20,6 @@ import com.anythingintellect.jakesgit.R;
 import com.anythingintellect.jakesgit.adapter.GitRepoAdapter;
 import com.anythingintellect.jakesgit.di.FragmentModule;
 import com.anythingintellect.jakesgit.model.GitRepo;
-import com.anythingintellect.jakesgit.util.Constants;
 import com.anythingintellect.jakesgit.util.Navigator;
 import com.anythingintellect.jakesgit.viewmodel.RepoListViewModel;
 
@@ -40,6 +40,7 @@ public class RepoListFragment extends Fragment {
     Navigator navigator;
     private GitRepoAdapter gitRepoAdapter;
     private LinearLayoutManager linearLayoutManager;
+    private RecyclerView rvList;
 
     public RepoListFragment() {
         setRetainInstance(true);
@@ -70,8 +71,8 @@ public class RepoListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rvRepoList);
-        setupRV(recyclerView);
+        rvList = (RecyclerView) view.findViewById(R.id.rvRepoList);
+        setupRV(rvList);
     }
 
     private void setupRV(RecyclerView recyclerView) {
@@ -123,6 +124,7 @@ public class RepoListFragment extends Fragment {
         public void onChange(RealmResults<GitRepo> collection, OrderedCollectionChangeSet changeSet) {
             // `null`  means the async query returns the first time.
             if (changeSet == null) {
+                // TODO: Fix know bug in case of first load
                 gitRepoAdapter.notifyDataSetChanged();
                 viewModel.loadPage();
                 return;
