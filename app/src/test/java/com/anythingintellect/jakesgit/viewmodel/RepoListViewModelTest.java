@@ -49,7 +49,7 @@ public class RepoListViewModelTest {
     // Should load from APIService
     @Test
     public void testLoadPage_ShouldLoadFromAPIService() {
-        givenRepoWithFetchRepoResponse(MockData.getEmptyRepoList());
+        givenRepoWithFetchRepoResponse(MockData.getListWithElementCount(Constants.ITEM_PER_PAGE));
 
         viewModel.loadPage();
 
@@ -66,7 +66,7 @@ public class RepoListViewModelTest {
     // Should save after success response
     @Test
     public void testLoadPage_shouldSaveResponseAfterSuccess() {
-        List<GitRepo> gitRepoList = MockData.getEmptyRepoList();
+        List<GitRepo> gitRepoList = MockData.getListWithElementCount(Constants.ITEM_PER_PAGE);
         givenRepoWithFetchRepoResponse(gitRepoList);
         viewModel.loadPage();
         verify(repository).saveGitRepoList(gitRepoList);
@@ -85,7 +85,7 @@ public class RepoListViewModelTest {
 
     // Should auto increase page for next request after full successful load
     @Test
-    public void testLoadPage_ShhouldAutoIncreasePageCountForNextRequest() {
+    public void testLoadPage_ShouldAutoIncreasePageCountForNextRequest() {
 
         // First request
         List<GitRepo> fullResponse = MockData.getListWithElementCount(Constants.ITEM_PER_PAGE);

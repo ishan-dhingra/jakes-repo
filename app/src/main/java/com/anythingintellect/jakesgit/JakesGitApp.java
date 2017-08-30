@@ -34,5 +34,9 @@ public class JakesGitApp extends Application {
         return appComponent;
     }
 
-    
+    public void setAppComponent(AppComponent appComponent) {
+        this.appComponent = appComponent;
+    }
+
+
 }
