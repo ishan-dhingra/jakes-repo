@@ -38,8 +38,8 @@ public class RepoListFragment extends Fragment {
     RepoListViewModel viewModel;
     @Inject
     Navigator navigator;
-    GitRepoAdapter gitRepoAdapter;
-    LinearLayoutManager linearLayoutManager;
+    private GitRepoAdapter gitRepoAdapter;
+    private LinearLayoutManager linearLayoutManager;
 
     public RepoListFragment() {
         setRetainInstance(true);

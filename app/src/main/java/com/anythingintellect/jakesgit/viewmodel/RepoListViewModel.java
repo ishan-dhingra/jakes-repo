@@ -25,10 +25,10 @@ public class RepoListViewModel {
 
     @Inject
     GitDataRepository repository;
-    private RealmResults<GitRepo> realRepoList;
+    private final RealmResults<GitRepo> realRepoList;
     private int page;
-    private ObservableField<Boolean> hasMore;
-    private ObservableField<Boolean> onError;
+    private final ObservableField<Boolean> hasMore;
+    private final ObservableField<Boolean> onError;
     private Disposable apiDisposable;
 
 
@@ -97,7 +97,7 @@ public class RepoListViewModel {
 
     public void onDispose() {
         if (apiDisposable != null) {
-            apiDisposable.dispose();;
+            apiDisposable.dispose();
         }
     }
 
